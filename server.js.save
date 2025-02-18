@@ -1,0 +1,28 @@
+transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+    console.error('Error sending email:', error); // More detailed error logging
+    return res.status(500).send(`Failed to send email: ${error.message}`);
+  }
+  console.log('Email sent:', info.response);
+  res.status(200).send('Email sent successfully');
+});
+const express = require('express');
+const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
+require('dotenv').config();
+
+console.log("Loaded ENV:", process.env.EMAIL_USER, process.env.EMAIL_PASS); // Add this line
+console.log("Initializing server...");
+
+const app = express();
+const PORT = process.env.PORT || 5001;
+
+app.use(bodyParser.json());
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
